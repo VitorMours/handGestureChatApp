@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <main class="justify-items-between">
-    <section class="min-vh-75 p-5 m-12">
+  <main class="d-flex flex-column" style="height: 100vh;">
+    <section class="min-vh-75 p-5 m-12 mb-5">
+      <!-- Conteúdo da seção -->
     </section>
-    <form id="form-mensagem" class="form-group p-2">
+
+    <form id="form-mensagem" class="position-fixed bottom-0 start-50 translate-middle-x w-75 form-group mb-4">
       <div class="input-group">
         <input required type="text" class="form-control" id="mensagem" placeholder="Digite a sua mensagem...">
         <button type="submit" class="btn btn-primary p-2">Enviar Mensagem</button>
       </div>
     </form>
   </main>
-
 {% endblock %}
