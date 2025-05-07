@@ -2,15 +2,15 @@
 
 {% block content %}
 
-  <form method=POST class="d-flex flex-column form-group p-4">
+  <form method="post" class="d-flex flex-column form-group p-4">
     <div class="d-flex container ">
       <div class="container">
         <label class="form-label">Digite seu nome</label>
-        <input class="form-control p-2" name="name" placeholder="Fulano de Tal" required>
+        <input class="form-control p-2" name="name" value=" {{ name }}" placeholder="Fulano de Tal" required>
       </div>
       <div class="container">
         <label class="form-label">Digite o codigo da sala</label>
-        <input class="form-control p-2" name="room_code" placeholder="XYZ4F"required>
+        <input class="form-control p-2" name="room_code" value="{{ room_code }}" placeholder="XYZ4F" required>
       </div>
     </div>
     <button class="btn btn-primary p-2 m-4 mx-auto" style="width: 250px; ">
