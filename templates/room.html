@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
 
 <main class="d-flex flex-column" style="height: 100vh;">
     <h2 class="bold mt-3">Chat Room #{{ room_code }}</h2>
     <section id="chat-area" name="chat-area" class="min-vh-75 p-5 m-12 mb-5">
-
+      
     </section>
 
     <form id="form-mensagem" class="position-fixed bottom-0 start-50 translate-middle-x w-75 form-group mb-4">
@@ -15,8 +16,6 @@
       </div>
     </form>
   </main>
-  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
-
   <script>
     let socketio = io();
     messages = document.getElementById("chat-area");
@@ -38,7 +37,7 @@
     socketio.on("connect", () => {
       console.log("Conectado com o chat...");
     });
-    
+
     socketio.on("message", (data) => {
       createMessage(data.name, data.message);
     });
@@ -52,7 +51,7 @@
   </script>
   {% for msg in messages %}
     <script type="text/javascript">
-       createMessage("{{ msg.name }}", "{{ msg.message }}");
+      createMessage("{{ msg.name }}", "{{ msg.message }}");
     </script>
   {% endfor %}
 {% endblock %}
