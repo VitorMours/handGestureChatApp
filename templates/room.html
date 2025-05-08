@@ -4,14 +4,14 @@
 
 <main class="d-flex flex-column" style="height: 100vh;">
     <h2 class="bold mt-3">Chat Room #{{ room_code }}</h2>
-    <section id="chat-area" class="min-vh-75 p-5 m-12 mb-5">
+    <section id="chat-area" name="chat-area" class="min-vh-75 p-5 m-12 mb-5">
 
     </section>
 
     <form id="form-mensagem" class="position-fixed bottom-0 start-50 translate-middle-x w-75 form-group mb-4">
       <div class="input-group">
         <input required type="text" class="form-control" id="mensagem" placeholder="Digite a sua mensagem...">
-        <button type="submit" class="btn btn-primary p-2">Enviar Mensagem</button>
+        <button type="submit" class="btn btn-primary p-2" onClick="sendMessage()">Enviar Mensagem</button>
       </div>
     </form>
   </main>
@@ -19,6 +19,40 @@
 
   <script>
     let socketio = io();
-    const createMessage = () => {}
+    messages = document.getElementById("chat-area");
+    
+    const createMessage = (name, msg) => {
+      const content = `
+      <div class="text">
+          <span>
+              <strong>${name}</strong>: ${msg}
+          </span>
+          <span class="muted">
+              ${new Date().toLocaleString()}
+          </span>
+      </div>
+      `;
+      messages.innerHTML += content;
+    };
+  
+    socketio.on("connect", () => {
+      console.log("Conectado com o chat...");
+    });
+    
+    socketio.on("message", (data) => {
+      createMessage(data.name, data.message);
+    });
+  
+    const sendMessage = () => {
+      const message = document.getElementById("mensagem");
+      if (message.value == "") return;
+      socketio.emit("message", { data: message.value });
+      message.value = "";
+    };
   </script>
+  {% for msg in messages %}
+    <script type="text/javascript">
+       createMessage("{{ msg.name }}", "{{ msg.message }}");
+    </script>
+  {% endfor %}
 {% endblock %}
