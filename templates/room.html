@@ -53,7 +53,6 @@
           class="w-100 rounded"
           autoplay
           playsinline
-          muted
         ></video>
         <canvas
           id="canvas-overlay"
@@ -72,35 +71,19 @@
 <script>
   let video = document.getElementById('video-return');
   let canvas = document.getElementById('canvas-overlay');
-  let ctx = canvas.getContext('2d');
-  let stream = null;
-  let captureInterval = null;
 
-  const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm");
-  const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
-    baseOptions: {
-      modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
-    },
-    numHands: 2
-  });
-
-  function activateCamera() {
-    try {
-      await gestureRecognizer.setOptions({ runningMode: "video" });
-      let lastVideoTime = -1;
-        const video = document.getElementById("video-return");
-        if (video.currentTime !== lastVideoTime) {
-          const gestureRecognitionResult = gestureRecognizer.recognizeForVideo(video);
-          processResult(gestureRecognitionResult);
-          lastVideoTime = video.currentTime;
-        }
-        requestAnimationFrame(() => {
-          renderLoop();
-        });
-    } catch (err) {
-      console.error("Erro ao acessar a câmera:", err);
-    }
-  }
+  navigator.mediaDevices
+    .getUserMedia({video: true})
+    .then((mediaStream) => {
+      video.srcObject = mediaStream;
+      video.onloadedmetadata = () => {
+        video.play();
+      };
+    })
+    .catch((err) => {
+      // always check for errors at the end.
+      console.error(`${err.name}: ${err.message}`);
+    });
 
   function stopAccessibility() {
     document.getElementById('camera-section').classList.add('d-none');
